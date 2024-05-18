@@ -1,0 +1,42 @@
+{
+  "version": "0.2",
+  "ignorePaths": [
+    "bun.lockb",
+    "bunfig.toml",
+    "node_modules",
+    "packages/*/node_modules",
+    "packages/*/lib",
+    "*.tsbuildinfo",
+    "packages/*/coverage"
+  ],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    "Acyclical",
+    "autodocs",
+    "bunfig",
+    "cobertura",
+    "docgen",
+    "execa",
+    "iconify",
+    "importsortrc",
+    "inversed",
+    "Jsons",
+    "lockb",
+    "mrcli",
+    "Roboto",
+    "RRGGBBAA",
+    "svgr",
+    "tsbuildinfo",
+    "typestyle",
+    "uncategorized",
+    "uncollapsed",
+    "Unfocus",
+    "ungap",
+    "unplugin",
+    "verba",
+    "Wordmark"
+  ],
+  "ignoreWords": [],
+  "import": []
+}

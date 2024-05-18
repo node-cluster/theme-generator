@@ -1,0 +1,26 @@
+{
+  "editor.tabSize": 2,
+  "editor.rulers": [120],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "sort-imports.on-save": true,
+  "sort-imports.default-sort-style": "module-scoped",
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "markdown.extension.toc.levels": "2..6",
+  "emmet.showExpandedAbbreviation": "never",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    // Toggle these if you want to see them. There are some scenarios where you may want to.
+    "packages/*/lib": true
+    // "packages/*/node_modules": true
+  }
+}

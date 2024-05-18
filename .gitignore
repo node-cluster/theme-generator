@@ -1,0 +1,13 @@
+/node_modules
+/build
+/lib
+.DS_Store
+/debug.log
+/package-lock.json
+/bun.lockb
+/bunfig.toml
+/packages/*/lib
+*.tsbuildinfo
+/.npmrc
+/packages/*/node_modules
+/typescript.ts

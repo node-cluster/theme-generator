@@ -1,0 +1,74 @@
+{
+  "extends": ["prettier"],
+  "ignorePatterns": [
+    "packages/*/lib",
+    "packages/*/coverage",
+    "node_modules",
+    "package.lock.json",
+    "bun.lockb",
+    "*.tsbuildinfo",
+    "LICENSE",
+    "*.yaml",
+    "*.go",
+    "*.sh",
+    "*.md",
+    "*.sql",
+    "*.json",
+    "*.scss",
+    "*.html",
+    "*.ico",
+    "*.ttf",
+    "*.woff2",
+    "*.txt",
+    "*.env",
+    "*.md",
+    "*.bat"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 14,
+    "sourceType": "module",
+    "project": "tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts", ".js"]
+      }
+    }
+  },
+  "rules": {
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "quote-props": ["error", "as-needed"],
+    "semi": [2, "never"],
+    "prefer-destructuring": "off",
+    "import/extensions": "off",
+    "radix": "off",
+    // "object-curly-newline": "off",
+    "comma-dangle": ["error", "always-multiline"],
+    "nonblock-statement-body-position": ["error", "any"],
+    // "curly": ["error", "multi-or-nest", "consistent"],
+    "max-len": ["error", { "code": 150, "ignoreTemplateLiterals": true }],
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-undef": "off",
+    "no-unused-vars": "off",
+    "arrow-parens": [2, "as-needed"],
+    "no-return-assign": [0],
+    // "brace-style": [2, "stroustrup"],
+    "no-underscore-dangle": [0],
+    "no-nested-ternary": [0],
+    "import/prefer-or-export": "off",
+    "@typescript-eslint/no-use-before-define": ["error", "nofunc"],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
+    "class-methods-use-this": "off",
+    "no-useless-constructor": "off",
+    "no-empty-function": "off",
+    "lines-between-class-members": "off",
+    "no-param-reassign": "warn",
+    "object-shorthand": ["error", "properties"],
+    "space-before-function-paren": "off",
+    "eol-last": "error"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Configuration for Site Theme Generator CLI",
+  "type": "object",
+  "properties": {
+    "canvas": {
+      "type": "string",
+      "description": "The color of the darkest background."
+    },
+    "type": {
+      "type": "string",
+      "description": "The color of the brightest text."
+    },
+    "red": {
+      "type": "string",
+      "description": "The base red color."
+    },
+    "green": {
+      "type": "string",
+      "description": "The base green color."
+    },
+    "blue": {
+      "type": "string",
+      "description": "The base blue color."
+    },
+    "yellow": {
+      "type": "string",
+      "description": "The base yellow color."
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  ".js, .jsx, .es6, .es, .snap": {
+    "parser": "babylon",
+    "style": "eslint"
+  },
+  ".ts, .tsx": {
+    "parser": "typescript",
+    "style": "module-scoped"
+  }
+}

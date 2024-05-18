@@ -1,0 +1,32 @@
+{
+  "name": "site-theme-generator",
+  "version": "1.0.0",
+  "description": "Site theme generator CLI",
+  "scripts": {
+    "start:file": "bun ./src/index.ts generate -c config.json",
+    "start:input": "bun ./src/index.ts generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/node-cluster/site-theme-generator.git"
+  },
+  "author": {
+    "name": "Sam Hughes",
+    "email": "samhughes1701@hotmail.co.uk",
+    "url": "https://x.com/thesamhuk"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/node-cluster/site-theme-generator/issues"
+  },
+  "homepage": "https://github.com/node-cluster/site-theme-generator#readme",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "inquirer": "^9.2.22",
+    "verba": "^2.7.1"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.2",
+    "@types/inquirer": "^9.0.7"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "include": ["./src"],
+  "compilerOptions": {
+    "jsx": "react",
+    "module": "CommonJS",
+    "target": "ES6",
+    "moduleResolution": "node",
+    "strict": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": true,
+    "composite": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@node-cluster/*": ["./packages/*"]
+    },
+    // We manually define types here to avoid the "infiltration" of global types that may not always be valid
+    // for every package. It is instead left up to the individual packages to define what types they want.
+    "types": ["@types/bun"],
+    // We manually define lib here for a similar reason as the `types` property above. It ensures that only
+    // the ES6 lib - the most fundamental one - is included by default. This means that a package must
+    // explicitly define any additional libs, for example for a browser-based package,it should
+    // include the "ES6" *and* "DOM" libs.
+    "lib": ["es2017"]
+  }
+}
