@@ -26,19 +26,19 @@ const createResult = (colors: GenerateCommandConfigColors): GenerateCommandResul
   typeDemote: darkenHexColor(colors.type, 30),
 
   red: colors.red,
-  redDemote: darkenHexColor(colors.red, 30),
+  redDemote: darkenHexColor(colors.red, 20),
   redSection: lightenHexColor(colors.red, 70),
 
   green: colors.green,
-  greenDemote: darkenHexColor(colors.green, 30),
+  greenDemote: darkenHexColor(colors.green, 20),
   greenSection: lightenHexColor(colors.green, 70),
 
   blue: colors.blue,
-  blueDemote: darkenHexColor(colors.blue, 30),
+  blueDemote: darkenHexColor(colors.blue, 20),
   blueSection: lightenHexColor(colors.blue, 70),
 
   yellow: colors.yellow,
-  yellowDemote: darkenHexColor(colors.yellow, 30),
+  yellowDemote: darkenHexColor(colors.yellow, 20),
   yellowSection: lightenHexColor(colors.yellow, 70),
 })
 
