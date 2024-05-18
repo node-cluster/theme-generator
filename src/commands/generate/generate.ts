@@ -6,34 +6,40 @@ import { file } from 'bun'
 import inquirer from 'inquirer'
 import { lightenHexColor } from '../../utils/lighten'
 import { darkenHexColor } from '../../utils/darken'
-import { GenerateCommandConfig, GenerateCommandResult, GenerateCommandOptions } from './generate.types'
+import {
+  GenerateCommandConfig,
+  GenerateCommandResult,
+  GenerateCommandOptions,
+  GenerateCommandConfigColors,
+} from './generate.types'
 import { typescriptOutput } from './output/typescript'
+import { OUTPUT_NAMES } from './output/output'
 
-const createResult = (config: GenerateCommandConfig): GenerateCommandResult => ({
-  canvas: config.canvas,
-  section: lightenHexColor(config.canvas, 10),
-  sectionHighlight: lightenHexColor(config.canvas, 20),
-  outline: lightenHexColor(config.canvas, 30),
+const createResult = (colors: GenerateCommandConfigColors): GenerateCommandResult => ({
+  canvas: colors.canvas,
+  section: lightenHexColor(colors.canvas, 10),
+  sectionHighlight: lightenHexColor(colors.canvas, 20),
+  outline: lightenHexColor(colors.canvas, 30),
 
-  type: config.type,
-  typeBody: darkenHexColor(config.type, 15),
-  typeDemote: darkenHexColor(config.type, 30),
+  type: colors.type,
+  typeBody: darkenHexColor(colors.type, 15),
+  typeDemote: darkenHexColor(colors.type, 30),
 
-  red: config.red,
-  redDemote: darkenHexColor(config.red, 30),
-  redSection: lightenHexColor(config.red, 70),
+  red: colors.red,
+  redDemote: darkenHexColor(colors.red, 30),
+  redSection: lightenHexColor(colors.red, 70),
 
-  green: config.green,
-  greenDemote: darkenHexColor(config.green, 30),
-  greenSection: lightenHexColor(config.green, 70),
+  green: colors.green,
+  greenDemote: darkenHexColor(colors.green, 30),
+  greenSection: lightenHexColor(colors.green, 70),
 
-  blue: config.blue,
-  blueDemote: darkenHexColor(config.blue, 30),
-  blueSection: lightenHexColor(config.blue, 70),
+  blue: colors.blue,
+  blueDemote: darkenHexColor(colors.blue, 30),
+  blueSection: lightenHexColor(colors.blue, 70),
 
-  yellow: config.yellow,
-  yellowDemote: darkenHexColor(config.yellow, 30),
-  yellowSection: lightenHexColor(config.yellow, 70),
+  yellow: colors.yellow,
+  yellowDemote: darkenHexColor(colors.yellow, 30),
+  yellowSection: lightenHexColor(colors.yellow, 70),
 })
 
 const getConfigViaInput = async (): Promise<GenerateCommandConfig> => {
@@ -44,15 +50,24 @@ const getConfigViaInput = async (): Promise<GenerateCommandConfig> => {
     { name: 'green', message: 'Base green color:', type: 'input' },
     { name: 'blue', message: 'Base blue color:', type: 'input' },
     { name: 'yellow', message: 'Base yellow color:', type: 'input' },
+    {
+      name: 'outputs',
+      message: 'InterOutputs:',
+      type: 'checkbox',
+      choices: OUTPUT_NAMES,
+    },
   ])
 
   return {
-    canvas: responses.canvas,
-    type: responses.type,
-    red: responses.red,
-    green: responses.green,
-    blue: responses.blue,
-    yellow: responses.yellow,
+    colors: {
+      canvas: responses.canvas,
+      type: responses.type,
+      red: responses.red,
+      green: responses.green,
+      blue: responses.blue,
+      yellow: responses.yellow,
+    },
+    outputs: responses.outputs,
   }
 }
 
@@ -78,12 +93,15 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
         log.step('Parsing config JSON.')
         const configJsonParsed: GenerateCommandConfig = JSON.parse(configJson)
         config = {
-          canvas: configJsonParsed.canvas.toUpperCase(),
-          type: configJsonParsed.type.toUpperCase(),
-          red: configJsonParsed.red.toUpperCase(),
-          green: configJsonParsed.green.toUpperCase(),
-          blue: configJsonParsed.blue.toUpperCase(),
-          yellow: configJsonParsed.yellow.toUpperCase(),
+          colors: {
+            canvas: configJsonParsed.colors.canvas.toUpperCase(),
+            type: configJsonParsed.colors.type.toUpperCase(),
+            red: configJsonParsed.colors.red.toUpperCase(),
+            green: configJsonParsed.colors.green.toUpperCase(),
+            blue: configJsonParsed.colors.blue.toUpperCase(),
+            yellow: configJsonParsed.colors.yellow.toUpperCase(),
+          },
+          outputs: configJsonParsed.outputs ?? ['typescript'],
         }
         log.success('Parsed config JSON.')
       } catch (e) {
@@ -101,7 +119,7 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
     log.spacer()
     log.log(f => f.italic('Color configuration:'))
     log.table(
-      Object.entries(config).map(([colorName, colorValue]) => ({
+      Object.entries(config.colors).map(([colorName, colorValue]) => ({
         'Color Name': colorName,
         'Color Value': colorValue,
       }))
@@ -109,7 +127,7 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
     log.spacer()
 
     log.step('Generating theme.')
-    const result = createResult(config)
+    const result = createResult(config.colors)
     log.success('Generated theme.')
 
     log.spacer()
@@ -120,8 +138,13 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
         'Color Value': colorValue,
       }))
     )
+    log.spacer()
 
-    await typescriptOutput(result)
+    if (config.outputs.includes('typescript')) {
+      log.step('Outputting results as Typescript.')
+      await typescriptOutput(result)
+      log.success('Outputted results as Typescript.')
+    }
   },
   configureCommander: program =>
     program.command('generate').description('Generates the .').option('-c, --config <PATH>', 'Specify config'),

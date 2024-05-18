@@ -1,3 +1,5 @@
+import { OutputName } from './output/output.types'
+
 export type GenerateCommandOptions = { verbose: boolean; configPath?: string }
 
 export type GenerateCommandConfigColors = {
@@ -9,7 +11,10 @@ export type GenerateCommandConfigColors = {
   yellow: string
 }
 
-export type GenerateCommandConfig = GenerateCommandConfigColors
+export type GenerateCommandConfig = {
+  colors: GenerateCommandConfigColors
+  outputs: OutputName[]
+}
 
 export type GenerateCommandResult = {
   canvas: string

@@ -3,29 +3,46 @@
   "description": "Configuration for Site Theme Generator CLI",
   "type": "object",
   "properties": {
-    "canvas": {
-      "type": "string",
-      "description": "The color of the darkest background."
+    "colors": {
+      "type": "object",
+      "properties": {
+        "canvas": {
+          "type": "string",
+          "description": "The color of the darkest background."
+        },
+        "type": {
+          "type": "string",
+          "description": "The color of the brightest text."
+        },
+        "red": {
+          "type": "string",
+          "description": "The base red color."
+        },
+        "green": {
+          "type": "string",
+          "description": "The base green color."
+        },
+        "blue": {
+          "type": "string",
+          "description": "The base blue color."
+        },
+        "yellow": {
+          "type": "string",
+          "description": "The base yellow color."
+        }
+      },
+      "required": ["canvas", "type", "red", "green", "blue", "yellow"],
+      "additionalProperties": false
     },
-    "type": {
-      "type": "string",
-      "description": "The color of the brightest text."
+    "outputs": {
+      "type": "array",
+      "description": "The list of outputs to send the result to.",
+      "items": {
+        "type": "string",
+        "enum": ["typescript"]
+      },
+      "uniqueItems": true
     },
-    "red": {
-      "type": "string",
-      "description": "The base red color."
-    },
-    "green": {
-      "type": "string",
-      "description": "The base green color."
-    },
-    "blue": {
-      "type": "string",
-      "description": "The base blue color."
-    },
-    "yellow": {
-      "type": "string",
-      "description": "The base yellow color."
-    }
+    "additionalProperties": false
   }
 }

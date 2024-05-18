@@ -1,9 +1,12 @@
 {
   "$schema": "./config.schema.json",
-  "canvas": "#1F2021",
-  "type": "#F5FBFF",
-  "red": "#F2503F",
-  "green": "#15ae12",
-  "blue": "#469AF2",
-  "yellow": "#a67d0c"
+  "colors": {
+    "canvas": "#1F2021",
+    "type": "#F5FBFF",
+    "red": "#F2503F",
+    "green": "#15ae12",
+    "blue": "#469AF2",
+    "yellow": "#a67d0c"
+  },
+  "outputs": ["typescript"]
 }
