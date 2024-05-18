@@ -4,8 +4,8 @@ import { createCommand } from '../../cliUtils/createCommand'
 import { log } from '../../log'
 import { file } from 'bun'
 import inquirer from 'inquirer'
-import { lightenHexColor } from '../utils/lighten'
-import { darkenHexColor } from '../utils/darken'
+import { lightenHexColor } from '../../utils/lighten'
+import { darkenHexColor } from '../../utils/darken'
 import { GenerateCommandConfig, GenerateCommandResult, GenerateCommandOptions } from './generate.types'
 import { typescriptOutput } from './output/typescript'
 
@@ -15,25 +15,25 @@ const createResult = (config: GenerateCommandConfig): GenerateCommandResult => (
   sectionHighlight: lightenHexColor(config.canvas, 20),
   outline: lightenHexColor(config.canvas, 30),
 
-  typeDemote: darkenHexColor(config.type, 20),
-  typeBody: darkenHexColor(config.type, 10),
   type: config.type,
+  typeBody: darkenHexColor(config.type, 15),
+  typeDemote: darkenHexColor(config.type, 30),
 
-  redDemote: darkenHexColor(config.red, 20),
   red: config.red,
-  redSection: lightenHexColor(config.red, 50),
+  redDemote: darkenHexColor(config.red, 30),
+  redSection: lightenHexColor(config.red, 70),
 
-  greenDemote: darkenHexColor(config.green, 20),
   green: config.green,
-  greenSection: lightenHexColor(config.green, 50),
+  greenDemote: darkenHexColor(config.green, 30),
+  greenSection: lightenHexColor(config.green, 70),
 
-  blueDemote: darkenHexColor(config.blue, 20),
   blue: config.blue,
-  blueSection: lightenHexColor(config.blue, 50),
+  blueDemote: darkenHexColor(config.blue, 30),
+  blueSection: lightenHexColor(config.blue, 70),
 
-  yellowDemote: darkenHexColor(config.yellow, 20),
   yellow: config.yellow,
-  yellowSection: lightenHexColor(config.yellow, 50),
+  yellowDemote: darkenHexColor(config.yellow, 30),
+  yellowSection: lightenHexColor(config.yellow, 70),
 })
 
 const getConfigViaInput = async (): Promise<GenerateCommandConfig> => {
