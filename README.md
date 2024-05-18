@@ -1,5 +1,7 @@
 # Site Theme Generator CLI
 
+Creates a basic website color palette from some base color config.
+
 ## Prerequisites
 
 - Clone repo.
