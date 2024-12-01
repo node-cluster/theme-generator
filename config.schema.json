@@ -29,9 +29,41 @@
         "yellow": {
           "type": "string",
           "description": "The base yellow color."
+        },
+        "orange": {
+          "type": "string",
+          "description": "The base orange color."
+        },
+        "purple": {
+          "type": "string",
+          "description": "The base purple color."
+        },
+        "pink": {
+          "type": "string",
+          "description": "The base pink color."
+        },
+        "slate": {
+          "type": "string",
+          "description": "The base slate color."
+        },
+        "turquoise": {
+          "type": "string",
+          "description": "The base turquoise color."
         }
       },
-      "required": ["canvas", "type", "red", "green", "blue", "yellow"],
+      "required": [
+        "canvas",
+        "type",
+        "red",
+        "green",
+        "blue",
+        "yellow",
+        "orange",
+        "purple",
+        "pink",
+        "slate",
+        "turquoise"
+      ],
       "additionalProperties": false
     },
     "outputs": {

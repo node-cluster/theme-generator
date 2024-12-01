@@ -10,4 +10,4 @@
 *.tsbuildinfo
 /.npmrc
 /packages/*/node_modules
-/typescript.ts
+/palette.ts
