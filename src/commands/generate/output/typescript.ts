@@ -52,6 +52,7 @@ ${Object.keys(result.colorGradients)
 
     return `// ${colorNameCapitalized}
   ${colorNameCapitalized} = Colors.${colorGradientEntryName(colorName, '500')},
+  ${colorNameCapitalized}Dark = Colors.${colorGradientEntryName(colorName, '300')},
   ${colorNameCapitalized}Demote = Colors.${colorGradientEntryName(colorName, '400')},
   ${colorNameCapitalized}Bright = Colors.${colorGradientEntryName(colorName, '600')},
   ${colorNameCapitalized}Section = Colors.${colorGradientEntryName(colorName, '800')},`
