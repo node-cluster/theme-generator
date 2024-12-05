@@ -4,8 +4,6 @@ import { createCommand } from '../../cliUtils/createCommand'
 import { log } from '../../log'
 import { file } from 'bun'
 import inquirer from 'inquirer'
-import { lightenHexColor } from '../../utils/lighten'
-import { darkenHexColor } from '../../utils/darken'
 import {
   GenerateCommandConfig,
   GenerateCommandResult,
@@ -16,85 +14,40 @@ import {
 } from './generate.types'
 import { typescriptOutput } from './output/typescript'
 import { OUTPUT_NAMES } from './output/output'
+import { changeLightness } from '../../utils/changeLightness'
 
 const hexColorToColorGradients = (color: string): ColorGradients => ({
-  '100': darkenHexColor(color, 80),
-  '200': darkenHexColor(color, 60),
-  '300': darkenHexColor(color, 40),
-  '400': darkenHexColor(color, 20),
+  '100': changeLightness(color, -80),
+  '200': changeLightness(color, -60),
+  '300': changeLightness(color, -40),
+  '400': changeLightness(color, -20),
   '500': color,
-  '600': lightenHexColor(color, 20),
-  '700': lightenHexColor(color, 40),
-  '800': lightenHexColor(color, 60),
-  '900': lightenHexColor(color, 80),
+  '600': changeLightness(color, 20),
+  '700': changeLightness(color, 40),
+  '800': changeLightness(color, 60),
+  '900': changeLightness(color, 80),
 })
 
 const createResult = (colors: GenerateCommandConfigColors): GenerateCommandResult => ({
   canvas: colors.canvas,
-  section: lightenHexColor(colors.canvas, 10),
-  sectionHighlight: lightenHexColor(colors.canvas, 20),
-  outline: lightenHexColor(colors.canvas, 30),
+  section: changeLightness(colors.canvas, 10),
+  sectionHighlight: changeLightness(colors.canvas, 20),
+  outline: changeLightness(colors.canvas, 30),
 
-  typeBright: colors.type,
-  type: darkenHexColor(colors.type, 15),
-  typeDemote: darkenHexColor(colors.type, 30),
+  type: colors.type,
+  typeBody: changeLightness(colors.type, -15),
+  typeDemote: changeLightness(colors.type, -30),
 
-  red: colors.red,
-  redDemote: darkenHexColor(colors.red, 20),
-  redBright: lightenHexColor(colors.red, 20),
-  redSection: lightenHexColor(colors.red, 70),
-
-  green: colors.green,
-  greenDemote: darkenHexColor(colors.green, 20),
-  greenBright: lightenHexColor(colors.green, 20),
-  greenSection: lightenHexColor(colors.green, 70),
-
-  blue: colors.blue,
-  blueBright: lightenHexColor(colors.blue, 20),
-  blueDemote: darkenHexColor(colors.blue, 20),
-  blueSection: lightenHexColor(colors.blue, 70),
-
-  yellow: colors.yellow,
-  yellowDemote: darkenHexColor(colors.yellow, 20),
-  yellowBright: lightenHexColor(colors.yellow, 20),
-  yellowSection: lightenHexColor(colors.yellow, 70),
-
-  purple: colors.purple,
-  purpleDemote: darkenHexColor(colors.purple, 20),
-  purpleBright: lightenHexColor(colors.purple, 20),
-  purpleSection: lightenHexColor(colors.purple, 70),
-
-  orange: colors.orange,
-  orangeDemote: darkenHexColor(colors.orange, 20),
-  orangeBright: lightenHexColor(colors.orange, 20),
-  orangeSection: lightenHexColor(colors.orange, 70),
-
-  pink: colors.pink,
-  pinkDemote: darkenHexColor(colors.pink, 20),
-  pinkBright: lightenHexColor(colors.pink, 20),
-  pinkSection: lightenHexColor(colors.pink, 70),
-
-  slate: colors.slate,
-  slateDemote: darkenHexColor(colors.slate, 20),
-  slateBright: lightenHexColor(colors.slate, 20),
-  slateSection: lightenHexColor(colors.slate, 70),
-
-  turquoise: colors.turquoise,
-  turquoiseDemote: darkenHexColor(colors.turquoise, 20),
-  turquoiseBright: lightenHexColor(colors.turquoise, 20),
-  turquoiseSection: lightenHexColor(colors.turquoise, 70),
-
-  colorGradients: {
-    red: hexColorToColorGradients(colors.red),
-    blue: hexColorToColorGradients(colors.blue),
-    green: hexColorToColorGradients(colors.green),
-    yellow: hexColorToColorGradients(colors.yellow),
-    purple: hexColorToColorGradients(colors.purple),
-    orange: hexColorToColorGradients(colors.orange),
-    pink: hexColorToColorGradients(colors.pink),
-    slate: hexColorToColorGradients(colors.slate),
-    turquoise: hexColorToColorGradients(colors.turquoise),
-  },
+  red: hexColorToColorGradients(colors.red),
+  blue: hexColorToColorGradients(colors.blue),
+  green: hexColorToColorGradients(colors.green),
+  yellow: hexColorToColorGradients(colors.yellow),
+  purple: hexColorToColorGradients(colors.purple),
+  orange: hexColorToColorGradients(colors.orange),
+  pink: hexColorToColorGradients(colors.pink),
+  slate: hexColorToColorGradients(colors.slate),
+  turquoise: hexColorToColorGradients(colors.turquoise),
+  grey: hexColorToColorGradients(colors.grey),
 })
 
 const getConfigViaInput = async (): Promise<GenerateCommandConfig> => {
@@ -123,6 +76,7 @@ const getConfigViaInput = async (): Promise<GenerateCommandConfig> => {
       pink: responses.pink,
       slate: responses.slate,
       turquoise: responses.turquoise,
+      grey: responses.grey,
     },
     outputs: responses.outputs,
   }
@@ -162,6 +116,7 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
             pink: configJsonParsed.colors.pink.toUpperCase(),
             slate: configJsonParsed.colors.slate.toUpperCase(),
             turquoise: configJsonParsed.colors.turquoise.toUpperCase(),
+            grey: configJsonParsed.colors.grey.toUpperCase(),
           },
           outputs: configJsonParsed.outputs ?? ['typescript'],
         }
@@ -197,7 +152,7 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
     log.table(
       Object.entries(result).map(([colorName, colorValue]) => ({
         'Color Name': colorName,
-        'Color Value': colorValue,
+        'Color Value': typeof colorValue === 'string' ? colorValue : Object.values(colorValue).join(','),
       }))
     )
     log.spacer()

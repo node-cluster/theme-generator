@@ -10,8 +10,9 @@
     "orange": "#f08e1f",
     "purple": "#d56cf5",
     "pink": "#f50aaa",
-    "slate": "#354b59",
-    "turquoise": "#1fd5db"
+    "slate": "#214761",
+    "turquoise": "#1fd5db",
+    "grey": "#40444a"
   },
   "outputs": ["typescript"]
 }

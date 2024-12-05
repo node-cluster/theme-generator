@@ -16,7 +16,17 @@ export type ColorGradient = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900
 
 export type ColorGradients = Record<ColorGradient, string>
 
-export type ColorName = 'red' | 'green' | 'blue' | 'yellow' | 'orange' | 'purple' | 'pink' | 'slate' | 'turquoise'
+export type ColorName =
+  | 'red'
+  | 'green'
+  | 'blue'
+  | 'yellow'
+  | 'orange'
+  | 'purple'
+  | 'pink'
+  | 'slate'
+  | 'turquoise'
+  | 'grey'
 
 export const COLOR_NAMES: ColorName[] = [
   'red',
@@ -28,6 +38,7 @@ export const COLOR_NAMES: ColorName[] = [
   'pink',
   'slate',
   'turquoise',
+  'grey',
 ]
 
 export type GenerateCommandResult = {
@@ -37,8 +48,6 @@ export type GenerateCommandResult = {
   outline: string
 
   type: string
+  typeBody: string
   typeDemote: string
-  typeBright: string
-
-  colorGradients: Record<ColorName, ColorGradients>
-} & Record<`${ColorName}${Capitalize<'' | 'demote' | 'bright' | 'section'>}`, string>
+} & Record<ColorName, ColorGradients>

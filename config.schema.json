@@ -49,6 +49,10 @@
         "turquoise": {
           "type": "string",
           "description": "The base turquoise color."
+        },
+        "grey": {
+          "type": "string",
+          "description": "The base grey color."
         }
       },
       "required": [
@@ -62,7 +66,8 @@
         "purple",
         "pink",
         "slate",
-        "turquoise"
+        "turquoise",
+        "grey"
       ],
       "additionalProperties": false
     },

@@ -1,3 +1,4 @@
+import { COLOR_NAMES } from '../generate.types'
 import { Output } from './output.types'
 import { write } from 'bun'
 
@@ -6,29 +7,23 @@ const colorGradientEntryName = (colorName: string, grad: string) =>
 
 export const typescriptOutput: Output = async result => {
   const colorsEnum = `export enum Colors {
-  ${Object.entries(result.colorGradients)
-    .flatMap(([colorName, gradients]) =>
-      Object.entries(gradients).map(([grad, color]) => `${colorGradientEntryName(colorName, grad)} = '${color}'`)
-    )
-    .join(',\n  ')}
+${COLOR_NAMES.flatMap(colorName =>
+  Object.entries(result[colorName]).map(([grad, color]) => `  ${colorGradientEntryName(colorName, grad)} = '${color}'`)
+).join(',\n')}
 }`
 
-  const colorsConstants = Object.entries(result.colorGradients)
-    .map(
-      ([colorName, gradients]) =>
-        `export const ${colorName.toUpperCase()}S = [
-${Object.keys(gradients)
+  const colorsConstants = COLOR_NAMES.map(
+    colorName => `export const ${colorName.toUpperCase()}S = [
+${Object.keys(result[colorName])
   .map(grad => `  Colors.${colorGradientEntryName(colorName, grad)}`)
   .join(',\n')},
 ]`
-    )
-    .join('\n\n')
+  ).join('\n\n')
 
-  const colorEntriesConstants = Object.entries(result.colorGradients)
-    .map(
-      ([colorName, gradients]) =>
-        `export const ${colorName.toUpperCase()}_ENTRIES = [
-${Object.keys(gradients)
+  const colorEntriesConstants = COLOR_NAMES.map(
+    colorName =>
+      `export const ${colorName.toUpperCase()}_ENTRIES = [
+${Object.keys(result[colorName])
   .map(
     grad =>
       `  { name: '${colorGradientEntryName(colorName, grad)}', color: Colors.${colorGradientEntryName(
@@ -38,13 +33,10 @@ ${Object.keys(gradients)
   )
   .join(',\n')},
 ]`
-    )
-    .join('\n\n')
+  ).join('\n\n')
 
   const allColorEntriesConstant = `export const COLOR_ENTRIES = [
-${Object.keys(result.colorGradients)
-  .map(colorName => `  ${colorName.toUpperCase()}_ENTRIES`)
-  .join(',\n')}
+${COLOR_NAMES.map(colorName => `  ${colorName.toUpperCase()}_ENTRIES`).join(',\n')},
 ]`
 
   const createPaletteEnumPart = (colorName: string) => {
@@ -67,19 +59,11 @@ ${Object.keys(result.colorGradients)
 
   // -- Type
   Type = '${result.type}',
-  TypeBright = '${result.typeBright}',
+  TypeBody = '${result.typeBody}',
   TypeDemote = '${result.typeDemote}',
 
   // -- Status
-  ${createPaletteEnumPart('red')}
-  ${createPaletteEnumPart('green')}
-  ${createPaletteEnumPart('blue')}
-  ${createPaletteEnumPart('yellow')}
-  ${createPaletteEnumPart('purple')}
-  ${createPaletteEnumPart('orange')}
-  ${createPaletteEnumPart('pink')}
-  ${createPaletteEnumPart('slate')}
-  ${createPaletteEnumPart('turquoise')}
+  ${COLOR_NAMES.map(colorName => createPaletteEnumPart(colorName)).join('\n  ')}
 }`
 
   await write(
