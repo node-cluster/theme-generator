@@ -17,43 +17,54 @@ import { OUTPUT_NAMES } from './output/output'
 import { changeLightness } from '../../utils/changeLightness'
 
 const hexColorToColorGradients = (color: string): ColorGradients => ({
-  '100': changeLightness(color, -80),
-  '200': changeLightness(color, -60),
-  '300': changeLightness(color, -40),
-  '400': changeLightness(color, -20),
-  '500': color,
-  '600': changeLightness(color, 20),
-  '700': changeLightness(color, 40),
-  '800': changeLightness(color, 60),
-  '900': changeLightness(color, 80),
+  '10': changeLightness(color, -80),
+  '15': changeLightness(color, -70),
+  '20': changeLightness(color, -60),
+  '25': changeLightness(color, -50),
+  '30': changeLightness(color, -40),
+  '40': changeLightness(color, -20),
+  '50': color,
+  '60': changeLightness(color, 20),
+  '70': changeLightness(color, 40),
+  '80': changeLightness(color, 60),
+  '90': changeLightness(color, 80),
 })
 
-const createResult = (colors: GenerateCommandConfigColors): GenerateCommandResult => ({
-  canvas: colors.canvas,
-  section: changeLightness(colors.canvas, 10),
-  sectionHighlight: changeLightness(colors.canvas, 20),
-  outline: changeLightness(colors.canvas, 30),
+const createResult = (colors: GenerateCommandConfigColors, theme: 'dark' | 'light'): GenerateCommandResult => {
+  const hueCentralizationCoefficient = theme === 'dark' ? 1 : -1
 
-  type: colors.type,
-  typeBody: changeLightness(colors.type, -15),
-  typeDemote: changeLightness(colors.type, -30),
+  return {
+    canvas: colors.canvas,
+    section: changeLightness(colors.canvas, hueCentralizationCoefficient * 10),
+    sectionHighlight: changeLightness(colors.canvas, hueCentralizationCoefficient * 20),
+    outline: changeLightness(colors.canvas, hueCentralizationCoefficient * 30),
 
-  red: hexColorToColorGradients(colors.red),
-  blue: hexColorToColorGradients(colors.blue),
-  green: hexColorToColorGradients(colors.green),
-  yellow: hexColorToColorGradients(colors.yellow),
-  purple: hexColorToColorGradients(colors.purple),
-  orange: hexColorToColorGradients(colors.orange),
-  pink: hexColorToColorGradients(colors.pink),
-  slate: hexColorToColorGradients(colors.slate),
-  turquoise: hexColorToColorGradients(colors.turquoise),
-  grey: hexColorToColorGradients(colors.grey),
-})
+    type: colors.type,
+    typeBody: changeLightness(colors.type, -hueCentralizationCoefficient * 15),
+    typeDemote: changeLightness(colors.type, -hueCentralizationCoefficient * 30),
+
+    typeLight: colors.typeLight,
+    typeBodyLight: changeLightness(colors.type, -15),
+    typeDemoteLight: changeLightness(colors.type, -30),
+
+    red: hexColorToColorGradients(colors.red),
+    blue: hexColorToColorGradients(colors.blue),
+    green: hexColorToColorGradients(colors.green),
+    yellow: hexColorToColorGradients(colors.yellow),
+    purple: hexColorToColorGradients(colors.purple),
+    orange: hexColorToColorGradients(colors.orange),
+    pink: hexColorToColorGradients(colors.pink),
+    slate: hexColorToColorGradients(colors.slate),
+    turquoise: hexColorToColorGradients(colors.turquoise),
+    grey: hexColorToColorGradients(colors.grey),
+  }
+}
 
 const getConfigViaInput = async (): Promise<GenerateCommandConfig> => {
   const responses = await inquirer.prompt([
-    { name: 'canvas', message: 'Canvas color (darkest background):', type: 'input' },
-    { name: 'type', message: 'Type color (lightest text):', type: 'input' },
+    { name: 'theme', message: 'Theme:', type: 'checkbox', choices: ['dark', 'light'], default: 'dark' },
+    { name: 'canvas', message: 'Canvas color (background):', type: 'input' },
+    { name: 'type', message: 'Type color (text):', type: 'input' },
     ...COLOR_NAMES.map(name => ({ name, message: `Base ${name} color:`, type: 'input' })),
     {
       name: 'outputs',
@@ -64,9 +75,11 @@ const getConfigViaInput = async (): Promise<GenerateCommandConfig> => {
   ])
 
   return {
+    theme: responses.theme,
     colors: {
       canvas: responses.canvas,
       type: responses.type,
+      typeLight: responses.typeLight,
       red: responses.red,
       green: responses.green,
       blue: responses.blue,
@@ -104,9 +117,11 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
         log.step('Parsing config JSON.')
         const configJsonParsed: GenerateCommandConfig = JSON.parse(configJson)
         config = {
+          theme: configJsonParsed.theme,
           colors: {
             canvas: configJsonParsed.colors.canvas.toUpperCase(),
             type: configJsonParsed.colors.type.toUpperCase(),
+            typeLight: configJsonParsed.colors.typeLight.toUpperCase(),
             red: configJsonParsed.colors.red.toUpperCase(),
             green: configJsonParsed.colors.green.toUpperCase(),
             blue: configJsonParsed.colors.blue.toUpperCase(),
@@ -144,7 +159,7 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
     log.spacer()
 
     log.step('Generating theme.')
-    const result = createResult(config.colors)
+    const result = createResult(config.colors, config.theme)
     log.success('Generated theme.')
 
     log.spacer()

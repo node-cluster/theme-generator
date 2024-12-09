@@ -3,16 +3,24 @@
   "description": "Configuration for Site Theme Generator CLI",
   "type": "object",
   "properties": {
+    "theme": {
+      "type": "string",
+      "enum": ["dark", "light"]
+    },
     "colors": {
       "type": "object",
       "properties": {
         "canvas": {
           "type": "string",
-          "description": "The color of the darkest background."
+          "description": "The color of the darkest/lightest background."
         },
         "type": {
           "type": "string",
-          "description": "The color of the brightest text."
+          "description": "The color of the darkest/lightest text."
+        },
+        "typeLight": {
+          "type": "string",
+          "description": "The color of the lightest text (independent of theme)."
         },
         "red": {
           "type": "string",

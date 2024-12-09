@@ -1,8 +1,10 @@
 {
   "$schema": "./config.schema.json",
+  "theme": "dark",
   "colors": {
     "canvas": "#192129",
     "type": "#F5FBFF",
+    "typeLight": "#F5FBFF",
     "red": "#F2503F",
     "green": "#15ae12",
     "blue": "#469AF2",

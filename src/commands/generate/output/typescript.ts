@@ -1,21 +1,23 @@
-import { COLOR_NAMES } from '../generate.types'
+import { COLOR_ALIAS_TO_GRADIENT, COLOR_ALIASES, COLOR_NAMES, ColorGradient } from '../generate.types'
 import { Output } from './output.types'
 import { write } from 'bun'
 
-const colorGradientEntryName = (colorName: string, grad: string) =>
+const colorGradientEntryName = (colorName: string, grad: ColorGradient) =>
   `${colorName[0].toUpperCase()}${colorName.slice(1)}${grad}`
 
 export const typescriptOutput: Output = async result => {
   const colorsEnum = `export enum Colors {
 ${COLOR_NAMES.flatMap(colorName =>
-  Object.entries(result[colorName]).map(([grad, color]) => `  ${colorGradientEntryName(colorName, grad)} = '${color}'`)
+  Object.entries(result[colorName]).map(
+    ([grad, color]) => `  ${colorGradientEntryName(colorName, grad as ColorGradient)} = '${color}'`
+  )
 ).join(',\n')}
 }`
 
   const colorsConstants = COLOR_NAMES.map(
     colorName => `export const ${colorName.toUpperCase()}S = [
 ${Object.keys(result[colorName])
-  .map(grad => `  Colors.${colorGradientEntryName(colorName, grad)}`)
+  .map(grad => `  Colors.${colorGradientEntryName(colorName, grad as ColorGradient)}`)
   .join(',\n')},
 ]`
   ).join('\n\n')
@@ -26,9 +28,9 @@ ${Object.keys(result[colorName])
 ${Object.keys(result[colorName])
   .map(
     grad =>
-      `  { name: '${colorGradientEntryName(colorName, grad)}', color: Colors.${colorGradientEntryName(
+      `  { name: '${colorGradientEntryName(colorName, grad as ColorGradient)}', color: Colors.${colorGradientEntryName(
         colorName,
-        grad
+        grad as ColorGradient
       )} }`
   )
   .join(',\n')},
@@ -42,12 +44,10 @@ ${COLOR_NAMES.map(colorName => `  ${colorName.toUpperCase()}_ENTRIES`).join(',\n
   const createPaletteEnumPart = (colorName: string) => {
     const colorNameCapitalized = `${colorName[0].toUpperCase()}${colorName.slice(1)}`
 
-    return `// ${colorNameCapitalized}
-  ${colorNameCapitalized} = Colors.${colorGradientEntryName(colorName, '500')},
-  ${colorNameCapitalized}Dark = Colors.${colorGradientEntryName(colorName, '300')},
-  ${colorNameCapitalized}Demote = Colors.${colorGradientEntryName(colorName, '400')},
-  ${colorNameCapitalized}Bright = Colors.${colorGradientEntryName(colorName, '600')},
-  ${colorNameCapitalized}Section = Colors.${colorGradientEntryName(colorName, '800')},`
+    return `// -- ${colorNameCapitalized}
+  ${Object.entries(COLOR_ALIAS_TO_GRADIENT)
+    .map(([alias, grad]) => `${colorNameCapitalized}${alias} = Colors.${colorGradientEntryName(colorName, grad)}`)
+    .join(',\n  ')},`
   }
 
   const paletteEnum = `export enum Palette {
@@ -62,7 +62,11 @@ ${COLOR_NAMES.map(colorName => `  ${colorName.toUpperCase()}_ENTRIES`).join(',\n
   TypeBody = '${result.typeBody}',
   TypeDemote = '${result.typeDemote}',
 
-  // -- Status
+  // -- Type (light)
+  TypeLight = '${result.typeLight}',
+  TypeBodyLight = '${result.typeBodyLight}',
+  TypeDemoteLight = '${result.typeDemoteLight}',
+
   ${COLOR_NAMES.map(colorName => createPaletteEnumPart(colorName)).join('\n  ')}
 }`
 
