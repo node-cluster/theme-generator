@@ -33,22 +33,28 @@ const createResult = ({ colors, themes }: GenerateCommandConfig): GenerateComman
   return {
     themes: {
       dark: {
-        canvas: themes.dark.canvas,
-        section: changeLightness(themes.dark.canvas, 10),
-        sectionHighlight: changeLightness(themes.dark.canvas, 20),
-        outline: changeLightness(themes.dark.canvas, 30),
-        type: themes.dark.type,
-        typeBody: changeLightness(themes.dark.type, -15),
-        typeDemote: changeLightness(themes.dark.type, -30),
+        colors: {
+          canvas: themes.dark.canvas,
+          section: changeLightness(themes.dark.canvas, 10),
+          sectionHighlight: changeLightness(themes.dark.canvas, 20),
+          outline: changeLightness(themes.dark.canvas, 30),
+          type: themes.dark.type,
+          typeBody: changeLightness(themes.dark.type, -15),
+          typeDemote: changeLightness(themes.dark.type, -30),
+        },
+        aliases: themes.dark.aliases,
       },
       light: {
-        canvas: themes.light.canvas,
-        section: changeLightness(themes.light.canvas, -10),
-        sectionHighlight: changeLightness(themes.light.canvas, -20),
-        outline: changeLightness(themes.light.canvas, -30),
-        type: themes.light.type,
-        typeBody: changeLightness(themes.light.type, 15),
-        typeDemote: changeLightness(themes.light.type, 30),
+        colors: {
+          canvas: themes.light.canvas,
+          section: changeLightness(themes.light.canvas, -10),
+          sectionHighlight: changeLightness(themes.light.canvas, -20),
+          outline: changeLightness(themes.light.canvas, -30),
+          type: themes.light.type,
+          typeBody: changeLightness(themes.light.type, 15),
+          typeDemote: changeLightness(themes.light.type, 30),
+        },
+        aliases: themes.light.aliases,
       },
     },
     colors: {
@@ -75,7 +81,6 @@ const mapKeys = (obj: Record<string, any>, map: (key: string) => string) => {
 
 export const generateCommand = createCommand<GenerateCommandOptions>({
   action: async ({ configPath = 'site-theme.json' }, startTimer) => {
-    let config: GenerateCommandConfig
     log.step(f => `Getting config from ${f.blue(f.underline(configPath))} (${path.resolve(configPath)})`)
     if (!existsSync(configPath)) {
       throw new Error(`File does not exist at path: ${configPath}.`)
@@ -84,6 +89,7 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
     log.step('Reading config file.')
     const configJson = await file(configPath).text()
     log.success('Read config file.')
+    let config: GenerateCommandConfig
     try {
       log.step('Parsing config JSON.')
       const configJsonParsed: GenerateCommandConfig = JSON.parse(configJson)
@@ -92,10 +98,12 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
           dark: {
             canvas: configJsonParsed.themes.dark.canvas.toUpperCase(),
             type: configJsonParsed.themes.dark.type.toUpperCase(),
+            aliases: configJsonParsed.themes.dark.aliases,
           },
           light: {
             canvas: configJsonParsed.themes.light.canvas.toUpperCase(),
             type: configJsonParsed.themes.light.type.toUpperCase(),
+            aliases: configJsonParsed.themes.light.aliases,
           },
         },
         colors: {

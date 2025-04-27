@@ -6,17 +6,7 @@ export const COLOR_GRADIENTS = [
 
 export type ColorGradient = (typeof COLOR_GRADIENTS)[number]
 
-export const COLOR_ALIASES = ['', 'Dark', 'Demote', 'Bright', 'Section'] as const satisfies string[]
-
-export type ColorAlias = (typeof COLOR_ALIASES)[number]
-
-export const COLOR_ALIAS_TO_GRADIENT: Record<ColorAlias, ColorGradient> = {
-  '': 50,
-  Dark: 30,
-  Demote: 40,
-  Bright: 60,
-  Section: 80,
-}
+export type ColorAliases = Record<string, ColorGradient>
 
 export type ColorGradients = Record<ColorGradient, string>
 
@@ -57,13 +47,19 @@ export type ThemeName = (typeof THEME_NAMES)[number]
 
 export type GenerateCommandOptions = { verbose: boolean; configPath?: string }
 
+export type ThemeConfig = Record<ThemeBaseColorName, string> & {
+  aliases: ColorAliases
+}
+
+export type GeneratedThemeConfig = { colors: Record<ThemeColorName, string>; aliases: ColorAliases }
+
 export type GenerateCommandConfig = {
-  themes: Record<ThemeName, Record<ThemeBaseColorName, string>>
+  themes: Record<ThemeName, ThemeConfig>
   colors: Record<ColorName, string>
   outputs: OutputName[]
 }
 
 export type GenerateCommandResult = {
-  themes: Record<ThemeName, Record<ThemeColorName, string>>
+  themes: Record<ThemeName, GeneratedThemeConfig>
   colors: Record<ColorName, ColorGradients>
 }

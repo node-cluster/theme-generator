@@ -3,11 +3,25 @@
   "themes": {
     "dark": {
       "canvas": "#192129",
-      "type": "#F5FBFF"
+      "type": "#F5FBFF",
+      "aliases": {
+        "dark": 30,
+        "demote": 40,
+        "": 50,
+        "bright": 60,
+        "section": 80
+      }
     },
     "light": {
       "canvas": "#F5FBFF",
-      "type": "#192129"
+      "type": "#192129",
+      "aliases": {
+        "dark": 30,
+        "demote": 40,
+        "": 50,
+        "bright": 60,
+        "section": 80
+      }
     }
   },
   "colors": {

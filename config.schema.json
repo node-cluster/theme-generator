@@ -17,9 +17,16 @@
             "type": {
               "type": "string",
               "description": "The color of the lightest text."
+            },
+            "aliases": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number",
+                "default": 50
+              }
             }
           },
-          "required": ["canvas", "type"],
+          "required": ["canvas", "type", "aliases"],
           "additionalProperties": false
         },
         "light": {
@@ -33,9 +40,16 @@
             "type": {
               "type": "string",
               "description": "The color of the darkest text."
+            },
+            "aliases": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number",
+                "default": 50
+              }
             }
           },
-          "required": ["canvas", "type"],
+          "required": ["canvas", "type", "aliases"],
           "additionalProperties": false
         }
       }
@@ -45,47 +59,58 @@
       "properties": {
         "red": {
           "type": "string",
-          "description": "The base red color."
+          "description": "The base red color.",
+          "default": "#F2503F"
         },
         "green": {
           "type": "string",
-          "description": "The base green color."
+          "description": "The base green color.",
+          "default": "#15ae12"
         },
         "blue": {
           "type": "string",
-          "description": "The base blue color."
+          "description": "The base blue color.",
+          "default": "#469AF2"
         },
         "yellow": {
           "type": "string",
-          "description": "The base yellow color."
+          "description": "The base yellow color.",
+          "default": "#f2f21b"
         },
         "orange": {
           "type": "string",
-          "description": "The base orange color."
+          "description": "The base orange color.",
+          "default": "#f08e1f"
         },
         "purple": {
           "type": "string",
-          "description": "The base purple color."
+          "description": "The base purple color.",
+          "default": "#d56cf5"
         },
         "pink": {
           "type": "string",
-          "description": "The base pink color."
+          "description": "The base pink color.",
+          "default": "#f50aaa"
         },
         "slate": {
           "type": "string",
-          "description": "The base slate color."
+          "description": "The base slate color.",
+          "default": "#214761"
         },
         "cyan": {
           "type": "string",
-          "description": "The base cyan color."
+          "description": "The base cyan color.",
+          "default": "#1fd5db"
         },
         "teal": {
           "type": "string",
-          "description": "The base teal color."
+          "description": "The base teal color.",
+          "default": "#1fdbaf"
         },
         "grey": {
           "type": "string",
-          "description": "The base grey color."
+          "description": "The base grey color.",
+          "default": "#40444a"
         }
       },
       "required": ["red", "green", "blue", "yellow", "orange", "purple", "pink", "cyan", "teal", "slate", "grey"],

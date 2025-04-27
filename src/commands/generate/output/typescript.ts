@@ -1,7 +1,6 @@
 import {
-  COLOR_ALIAS_TO_GRADIENT,
-  COLOR_ALIASES,
   COLOR_NAMES,
+  ColorAliases,
   GenerateCommandResult,
   THEME_COLOR_NAMES,
   THEME_NAMES,
@@ -11,6 +10,8 @@ import { Output } from './output.types'
 import { write } from 'bun'
 
 const colorGradientEntryName = (colorName: string, grad: string | number) => `${colorName}${grad}`
+
+const capitalize = (s: string) => (s.length > 0 ? `${s[0].toUpperCase()}${s.slice(1)}` : '')
 
 const createColorsConst = (result: GenerateCommandResult) => {
   return `export const COLORS = {
@@ -55,32 +56,32 @@ ${COLOR_NAMES.map(colorName => `  ${colorName.toUpperCase()}_ENTRIES`).join(',\n
 ]`
 }
 
-const createPaletteConstPart = (colorName: string) => {
+const createPaletteConstPart = (colorName: string, aliases: ColorAliases) => {
   return `// -- ${colorName[0].toUpperCase()}${colorName.slice(1)}s
-${Object.entries(COLOR_ALIAS_TO_GRADIENT)
-  .map(([alias, grad]) => `  ${colorName}${alias}: COLORS.${colorGradientEntryName(colorName, grad)}`)
+${Object.entries(aliases)
+  .map(([alias, grad]) => `  ${colorName}${capitalize(alias)}: COLORS.${colorGradientEntryName(colorName, grad)}`)
   .join(',\n')},`
 }
 
 const createPaletteConst = (result: GenerateCommandResult, theme: ThemeName) => {
   return `export const ${theme.toUpperCase()}_PALETTE = {
   // -- Backgrounds
-  canvas: '${result.themes[theme].canvas}',
-  section: '${result.themes[theme].section}',
-  sectionHighlight: '${result.themes[theme].sectionHighlight}',
-  outline: '${result.themes[theme].outline}',
+  canvas: '${result.themes[theme].colors.canvas}',
+  section: '${result.themes[theme].colors.section}',
+  sectionHighlight: '${result.themes[theme].colors.sectionHighlight}',
+  outline: '${result.themes[theme].colors.outline}',
   // -- Foregrounds
-  type: '${result.themes[theme].type}',
-  typeBody: '${result.themes[theme].typeBody}',
-  typeDemote: '${result.themes[theme].typeDemote}',
-  ${COLOR_NAMES.map(createPaletteConstPart).join('\n  ')}
-}`
+  type: '${result.themes[theme].colors.type}',
+  typeBody: '${result.themes[theme].colors.typeBody}',
+  typeDemote: '${result.themes[theme].colors.typeDemote}',
+  ${COLOR_NAMES.map(colorName => createPaletteConstPart(colorName, result.themes[theme].aliases)).join('\n  ')}
+} as const satisfies Palette`
 }
 
-const createPaletteType = () => {
+const createPaletteType = (aliases: ColorAliases) => {
   return `export type Palette = {
   ${THEME_COLOR_NAMES.map(colorName => `${colorName}: string`).join(',\n  ')}
-  ${COLOR_NAMES.map(colorName => COLOR_ALIASES.map(alias => `${colorName}${alias}: string`))
+  ${COLOR_NAMES.map(colorName => Object.keys(aliases).map(alias => `${colorName}${capitalize(alias)}: string`))
     .flat()
     .join(',\n  ')}
 }`
@@ -92,11 +93,11 @@ export const typescriptOutput: Output = async result => {
   const colorEntriesConstants = createColorEntriesConsts(result)
   const allColorEntriesConstant = createAllColorEntriesConst()
   const paletteConsts = THEME_NAMES.map(theme => createPaletteConst(result, theme)).join('\n\n')
-  const paletteType = createPaletteType()
+  const paletteType = createPaletteType(result.themes.dark.aliases)
 
   await write(
     './palette.ts',
-    [colorsConst, colorConstants, colorEntriesConstants, allColorEntriesConstant, paletteConsts, paletteType].join(
+    [colorsConst, colorConstants, colorEntriesConstants, allColorEntriesConstant, paletteType, paletteConsts].join(
       '\n\n'
     ) + '\n'
   )

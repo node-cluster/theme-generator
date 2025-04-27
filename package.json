@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Site theme generator CLI",
   "scripts": {
-    "start:file": "bun ./src/index.ts generate -c config.json",
-    "start:input": "bun ./src/index.ts generate"
+    "start": "bun ./src/index.ts generate -c config.json"
   },
   "repository": {
     "type": "git",

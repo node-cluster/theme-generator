@@ -3,13 +3,5 @@
   "singleQuote": true,
   "tabWidth": 2,
   "semi": false,
-  "arrowParens": "avoid",
-  "overrides": [
-    {
-      "files": ["*.yaml", "*.yml"],
-      "options": {
-        "singleQuote": false
-      }
-    }
-  ]
+  "arrowParens": "avoid"
 }
