@@ -1,10 +1,16 @@
 {
   "$schema": "./config.schema.json",
-  "theme": "dark",
+  "themes": {
+    "dark": {
+      "canvas": "#192129",
+      "type": "#F5FBFF"
+    },
+    "light": {
+      "canvas": "#F5FBFF",
+      "type": "#192129"
+    }
+  },
   "colors": {
-    "canvas": "#192129",
-    "type": "#F5FBFF",
-    "typeLight": "#F5FBFF",
     "red": "#F2503F",
     "green": "#15ae12",
     "blue": "#469AF2",
@@ -13,7 +19,8 @@
     "purple": "#d56cf5",
     "pink": "#f50aaa",
     "slate": "#214761",
-    "turquoise": "#1fd5db",
+    "cyan": "#1fd5db",
+    "teal": "#1fdbaf",
     "grey": "#40444a"
   },
   "outputs": ["typescript"]

@@ -1,77 +1,103 @@
-import { COLOR_ALIAS_TO_GRADIENT, COLOR_ALIASES, COLOR_NAMES, ColorGradient } from '../generate.types'
+import {
+  COLOR_ALIAS_TO_GRADIENT,
+  COLOR_ALIASES,
+  COLOR_NAMES,
+  GenerateCommandResult,
+  THEME_COLOR_NAMES,
+  THEME_NAMES,
+  ThemeName,
+} from '../generate.types'
 import { Output } from './output.types'
 import { write } from 'bun'
 
-const colorGradientEntryName = (colorName: string, grad: ColorGradient) =>
-  `${colorName[0].toUpperCase()}${colorName.slice(1)}${grad}`
+const colorGradientEntryName = (colorName: string, grad: string | number) => `${colorName}${grad}`
 
-export const typescriptOutput: Output = async result => {
-  const colorsEnum = `export enum Colors {
+const createColorsConst = (result: GenerateCommandResult) => {
+  return `export const COLORS = {
 ${COLOR_NAMES.flatMap(colorName =>
-  Object.entries(result[colorName]).map(
-    ([grad, color]) => `  ${colorGradientEntryName(colorName, grad as ColorGradient)} = '${color}'`
+  Object.entries(result.colors[colorName]).map(
+    ([grad, color]) => `  ${colorGradientEntryName(colorName, grad)}: '${color}'`
   )
-).join(',\n')}
+).join(',\n')},
 }`
+}
 
-  const colorsConstants = COLOR_NAMES.map(
+const createColorConsts = (result: GenerateCommandResult) => {
+  return COLOR_NAMES.map(
     colorName => `export const ${colorName.toUpperCase()}S = [
-${Object.keys(result[colorName])
-  .map(grad => `  Colors.${colorGradientEntryName(colorName, grad as ColorGradient)}`)
+${Object.keys(result.colors[colorName])
+  .map(grad => `  COLORS.${colorGradientEntryName(colorName, grad)}`)
   .join(',\n')},
 ]`
   ).join('\n\n')
+}
 
-  const colorEntriesConstants = COLOR_NAMES.map(
+const createColorEntriesConsts = (result: GenerateCommandResult) => {
+  return COLOR_NAMES.map(
     colorName =>
       `export const ${colorName.toUpperCase()}_ENTRIES = [
-${Object.keys(result[colorName])
+${Object.keys(result.colors[colorName])
   .map(
     grad =>
-      `  { name: '${colorGradientEntryName(colorName, grad as ColorGradient)}', color: Colors.${colorGradientEntryName(
+      `  { name: '${colorGradientEntryName(colorName, grad)}', color: COLORS.${colorGradientEntryName(
         colorName,
-        grad as ColorGradient
+        grad
       )} }`
   )
   .join(',\n')},
 ]`
   ).join('\n\n')
+}
 
-  const allColorEntriesConstant = `export const COLOR_ENTRIES = [
+const createAllColorEntriesConst = () => {
+  return `export const COLOR_ENTRIES = [
 ${COLOR_NAMES.map(colorName => `  ${colorName.toUpperCase()}_ENTRIES`).join(',\n')},
 ]`
+}
 
-  const createPaletteEnumPart = (colorName: string) => {
-    const colorNameCapitalized = `${colorName[0].toUpperCase()}${colorName.slice(1)}`
+const createPaletteConstPart = (colorName: string) => {
+  return `// -- ${colorName[0].toUpperCase()}${colorName.slice(1)}s
+${Object.entries(COLOR_ALIAS_TO_GRADIENT)
+  .map(([alias, grad]) => `  ${colorName}${alias}: COLORS.${colorGradientEntryName(colorName, grad)}`)
+  .join(',\n')},`
+}
 
-    return `// -- ${colorNameCapitalized}
-  ${Object.entries(COLOR_ALIAS_TO_GRADIENT)
-    .map(([alias, grad]) => `${colorNameCapitalized}${alias} = Colors.${colorGradientEntryName(colorName, grad)}`)
-    .join(',\n  ')},`
-  }
-
-  const paletteEnum = `export enum Palette {
-  // -- Section
-  Canvas = '${result.canvas}',
-  Section = '${result.section}',
-  SectionHighlight = '${result.sectionHighlight}',
-  Outline = '${result.outline}',
-
-  // -- Type
-  Type = '${result.type}',
-  TypeBody = '${result.typeBody}',
-  TypeDemote = '${result.typeDemote}',
-
-  // -- Type (light)
-  TypeLight = '${result.typeLight}',
-  TypeBodyLight = '${result.typeBodyLight}',
-  TypeDemoteLight = '${result.typeDemoteLight}',
-
-  ${COLOR_NAMES.map(colorName => createPaletteEnumPart(colorName)).join('\n  ')}
+const createPaletteConst = (result: GenerateCommandResult, theme: ThemeName) => {
+  return `export const ${theme.toUpperCase()}_PALETTE = {
+  // -- Backgrounds
+  canvas: '${result.themes[theme].canvas}',
+  section: '${result.themes[theme].section}',
+  sectionHighlight: '${result.themes[theme].sectionHighlight}',
+  outline: '${result.themes[theme].outline}',
+  // -- Foregrounds
+  type: '${result.themes[theme].type}',
+  typeBody: '${result.themes[theme].typeBody}',
+  typeDemote: '${result.themes[theme].typeDemote}',
+  ${COLOR_NAMES.map(createPaletteConstPart).join('\n  ')}
 }`
+}
+
+const createPaletteType = () => {
+  return `export type Palette = {
+  ${THEME_COLOR_NAMES.map(colorName => `${colorName}: string`).join(',\n  ')}
+  ${COLOR_NAMES.map(colorName => COLOR_ALIASES.map(alias => `${colorName}${alias}: string`))
+    .flat()
+    .join(',\n  ')}
+}`
+}
+
+export const typescriptOutput: Output = async result => {
+  const colorsConst = createColorsConst(result)
+  const colorConstants = createColorConsts(result)
+  const colorEntriesConstants = createColorEntriesConsts(result)
+  const allColorEntriesConstant = createAllColorEntriesConst()
+  const paletteConsts = THEME_NAMES.map(theme => createPaletteConst(result, theme)).join('\n\n')
+  const paletteType = createPaletteType()
 
   await write(
     './palette.ts',
-    [colorsEnum, colorsConstants, colorEntriesConstants, allColorEntriesConstant, paletteEnum].join('\n\n') + '\n'
+    [colorsConst, colorConstants, colorEntriesConstants, allColorEntriesConstant, paletteConsts, paletteType].join(
+      '\n\n'
+    ) + '\n'
   )
 }

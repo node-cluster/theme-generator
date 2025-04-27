@@ -3,25 +3,46 @@
   "description": "Configuration for Site Theme Generator CLI",
   "type": "object",
   "properties": {
-    "theme": {
-      "type": "string",
-      "enum": ["dark", "light"]
+    "themes": {
+      "type": "object",
+      "properties": {
+        "dark": {
+          "type": "object",
+          "description": "Background and foreground colors for the dark theme.",
+          "properties": {
+            "canvas": {
+              "type": "string",
+              "description": "The color of the darkest background."
+            },
+            "type": {
+              "type": "string",
+              "description": "The color of the lightest text."
+            }
+          },
+          "required": ["canvas", "type"],
+          "additionalProperties": false
+        },
+        "light": {
+          "type": "object",
+          "description": "Background and foreground colors for the light theme.",
+          "properties": {
+            "canvas": {
+              "type": "string",
+              "description": "The color of the lightest background."
+            },
+            "type": {
+              "type": "string",
+              "description": "The color of the darkest text."
+            }
+          },
+          "required": ["canvas", "type"],
+          "additionalProperties": false
+        }
+      }
     },
     "colors": {
       "type": "object",
       "properties": {
-        "canvas": {
-          "type": "string",
-          "description": "The color of the darkest/lightest background."
-        },
-        "type": {
-          "type": "string",
-          "description": "The color of the darkest/lightest text."
-        },
-        "typeLight": {
-          "type": "string",
-          "description": "The color of the lightest text (independent of theme)."
-        },
         "red": {
           "type": "string",
           "description": "The base red color."
@@ -54,29 +75,20 @@
           "type": "string",
           "description": "The base slate color."
         },
-        "turquoise": {
+        "cyan": {
           "type": "string",
-          "description": "The base turquoise color."
+          "description": "The base cyan color."
+        },
+        "teal": {
+          "type": "string",
+          "description": "The base teal color."
         },
         "grey": {
           "type": "string",
           "description": "The base grey color."
         }
       },
-      "required": [
-        "canvas",
-        "type",
-        "red",
-        "green",
-        "blue",
-        "yellow",
-        "orange",
-        "purple",
-        "pink",
-        "slate",
-        "turquoise",
-        "grey"
-      ],
+      "required": ["red", "green", "blue", "yellow", "orange", "purple", "pink", "cyan", "teal", "slate", "grey"],
       "additionalProperties": false
     },
     "outputs": {

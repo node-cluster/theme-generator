@@ -1,48 +1,26 @@
 import { OutputName } from './output/output.types'
 
-export type GenerateCommandOptions = { verbose: boolean; configPath?: string }
+export const COLOR_GRADIENTS = [
+  5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
+] as const satisfies number[]
 
-export type GenerateCommandConfigColors = {
-  canvas: string
-  typeLight: string
-  type: string
-} & Record<ColorName, string>
+export type ColorGradient = (typeof COLOR_GRADIENTS)[number]
 
-export type GenerateCommandConfig = {
-  theme: 'dark' | 'light'
-  colors: GenerateCommandConfigColors
-  outputs: OutputName[]
-}
+export const COLOR_ALIASES = ['', 'Dark', 'Demote', 'Bright', 'Section'] as const satisfies string[]
 
-export type ColorGradient = '10' | '15' | '20' | '25' | '30' | '40' | '50' | '60' | '70' | '80' | '90'
-
-export type ColorAlias = '' | 'Dark' | 'Demote' | 'Bright' | 'Section'
-
-export const COLOR_ALIASES: ColorAlias[] = ['', 'Dark', 'Demote', 'Bright', 'Section']
+export type ColorAlias = (typeof COLOR_ALIASES)[number]
 
 export const COLOR_ALIAS_TO_GRADIENT: Record<ColorAlias, ColorGradient> = {
-  '': '50',
-  Dark: '30',
-  Demote: '40',
-  Bright: '60',
-  Section: '80',
+  '': 50,
+  Dark: 30,
+  Demote: 40,
+  Bright: 60,
+  Section: 80,
 }
 
 export type ColorGradients = Record<ColorGradient, string>
 
-export type ColorName =
-  | 'red'
-  | 'green'
-  | 'blue'
-  | 'yellow'
-  | 'orange'
-  | 'purple'
-  | 'pink'
-  | 'slate'
-  | 'turquoise'
-  | 'grey'
-
-export const COLOR_NAMES: ColorName[] = [
+export const COLOR_NAMES = [
   'red',
   'green',
   'blue',
@@ -51,21 +29,41 @@ export const COLOR_NAMES: ColorName[] = [
   'purple',
   'pink',
   'slate',
-  'turquoise',
+  'cyan',
+  'teal',
   'grey',
-]
+] as const satisfies string[]
+
+export type ColorName = (typeof COLOR_NAMES)[number]
+
+export const THEME_BASE_COLOR_NAMES = ['canvas', 'type'] as const satisfies string[]
+
+export type ThemeBaseColorName = (typeof THEME_BASE_COLOR_NAMES)[number]
+
+export const THEME_COLOR_NAMES = [
+  ...THEME_BASE_COLOR_NAMES,
+  'section',
+  'sectionHighlight',
+  'outline',
+  'typeBody',
+  'typeDemote',
+] as const satisfies string[]
+
+export type ThemeColorName = (typeof THEME_COLOR_NAMES)[number]
+
+export const THEME_NAMES = ['dark', 'light'] as const satisfies string[]
+
+export type ThemeName = (typeof THEME_NAMES)[number]
+
+export type GenerateCommandOptions = { verbose: boolean; configPath?: string }
+
+export type GenerateCommandConfig = {
+  themes: Record<ThemeName, Record<ThemeBaseColorName, string>>
+  colors: Record<ColorName, string>
+  outputs: OutputName[]
+}
 
 export type GenerateCommandResult = {
-  canvas: string
-  section: string
-  sectionHighlight: string
-  outline: string
-
-  type: string
-  typeBody: string
-  typeDemote: string
-
-  typeLight: string
-  typeBodyLight: string
-  typeDemoteLight: string
-} & Record<ColorName, ColorGradients>
+  themes: Record<ThemeName, Record<ThemeColorName, string>>
+  colors: Record<ColorName, ColorGradients>
+}
