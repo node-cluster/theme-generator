@@ -30,6 +30,11 @@ const hexColorToColorGradients = (color: string): ColorGradients => ({
 })
 
 const createResult = ({ colors, themes }: GenerateCommandConfig): GenerateCommandResult => {
+  const colorsResult: Record<string, ColorGradients> = {}
+  Object.entries(colors).forEach(([colorName, colorHex]) => {
+    colorsResult[colorName] = hexColorToColorGradients(colorHex)
+  })
+
   return {
     themes: {
       dark: {
@@ -57,19 +62,7 @@ const createResult = ({ colors, themes }: GenerateCommandConfig): GenerateComman
         aliases: themes.light.aliases,
       },
     },
-    colors: {
-      red: hexColorToColorGradients(colors.red),
-      blue: hexColorToColorGradients(colors.blue),
-      green: hexColorToColorGradients(colors.green),
-      yellow: hexColorToColorGradients(colors.yellow),
-      purple: hexColorToColorGradients(colors.purple),
-      orange: hexColorToColorGradients(colors.orange),
-      pink: hexColorToColorGradients(colors.pink),
-      slate: hexColorToColorGradients(colors.slate),
-      cyan: hexColorToColorGradients(colors.cyan),
-      teal: hexColorToColorGradients(colors.teal),
-      grey: hexColorToColorGradients(colors.grey),
-    },
+    colors: colorsResult,
   }
 }
 
@@ -93,6 +86,7 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
     try {
       log.step('Parsing config JSON.')
       const configJsonParsed: GenerateCommandConfig = JSON.parse(configJson)
+
       config = {
         themes: {
           dark: {
@@ -106,21 +100,14 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
             aliases: configJsonParsed.themes.light.aliases,
           },
         },
-        colors: {
-          red: configJsonParsed.colors.red.toUpperCase(),
-          green: configJsonParsed.colors.green.toUpperCase(),
-          blue: configJsonParsed.colors.blue.toUpperCase(),
-          yellow: configJsonParsed.colors.yellow.toUpperCase(),
-          orange: configJsonParsed.colors.orange.toUpperCase(),
-          purple: configJsonParsed.colors.purple.toUpperCase(),
-          pink: configJsonParsed.colors.pink.toUpperCase(),
-          slate: configJsonParsed.colors.slate.toUpperCase(),
-          cyan: configJsonParsed.colors.cyan.toUpperCase(),
-          teal: configJsonParsed.colors.teal.toUpperCase(),
-          grey: configJsonParsed.colors.grey.toUpperCase(),
-        },
+        colors: {}, // Will set immediately below
         outputs: configJsonParsed.outputs ?? ['typescript'],
       }
+
+      Object.entries(configJsonParsed.colors).forEach(([colorName, colorHex]) => {
+        config.colors[colorName] = colorHex
+      })
+
       log.success('Parsed config JSON.')
     } catch (e) {
       throw new Error(`Could not parse config at ${configPath}.\n\nError: ${e}`)
@@ -156,7 +143,7 @@ export const generateCommand = createCommand<GenerateCommandOptions>({
     log.table(
       Object.entries(result.themes).map(([theme, colorsObj]) => ({
         Theme: theme,
-        ...colorsObj,
+        ...colorsObj.colors,
       }))
     )
     log.spacer()

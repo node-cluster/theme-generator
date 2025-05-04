@@ -10,22 +10,6 @@ export type ColorAliases = Record<string, ColorGradient>
 
 export type ColorGradients = Record<ColorGradient, string>
 
-export const COLOR_NAMES = [
-  'red',
-  'green',
-  'blue',
-  'yellow',
-  'orange',
-  'purple',
-  'pink',
-  'slate',
-  'cyan',
-  'teal',
-  'grey',
-] as const satisfies string[]
-
-export type ColorName = (typeof COLOR_NAMES)[number]
-
 export const THEME_BASE_COLOR_NAMES = ['canvas', 'type'] as const satisfies string[]
 
 export type ThemeBaseColorName = (typeof THEME_BASE_COLOR_NAMES)[number]
@@ -55,11 +39,11 @@ export type GeneratedThemeConfig = { colors: Record<ThemeColorName, string>; ali
 
 export type GenerateCommandConfig = {
   themes: Record<ThemeName, ThemeConfig>
-  colors: Record<ColorName, string>
+  colors: Record<string, string>
   outputs: OutputName[]
 }
 
 export type GenerateCommandResult = {
   themes: Record<ThemeName, GeneratedThemeConfig>
-  colors: Record<ColorName, ColorGradients>
+  colors: Record<string, ColorGradients>
 }

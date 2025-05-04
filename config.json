@@ -5,22 +5,22 @@
       "canvas": "#192129",
       "type": "#F5FBFF",
       "aliases": {
-        "dark": 30,
+        "type": 20,
         "demote": 40,
         "": 50,
-        "bright": 60,
-        "section": 80
+        "accent": 60,
+        "canvas": 80
       }
     },
     "light": {
-      "canvas": "#F5FBFF",
+      "canvas": "#FFFFFF",
       "type": "#192129",
       "aliases": {
-        "dark": 30,
-        "demote": 40,
+        "type": 80,
+        "demote": 60,
         "": 50,
-        "bright": 60,
-        "section": 80
+        "accent": 40,
+        "canvas": 20
       }
     }
   },
