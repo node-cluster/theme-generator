@@ -1,6 +1,8 @@
+import { log } from '../../../log'
 import { ColorAliases, GenerateCommandResult, THEME_COLOR_NAMES, THEME_NAMES, ThemeName } from '../generate.types'
 import { Output } from './output.types'
 import { write } from 'bun'
+import { resolve } from 'path'
 
 const colorGradientEntryName = (colorName: string, grad: string | number) => `${colorName}${grad}`
 
@@ -96,8 +98,10 @@ const createPaletteNameType = () => {
 }
 
 export const typescriptOutput: Output = async result => {
+  const filePath = './palette.ts'
+  log.step(f => `Writing results to ${f.cyan(filePath)} ${f.grey(f.italic(`(${resolve(filePath)})`))}`)
   await write(
-    './palette.ts',
+    filePath,
     [
       createColorsConst(result),
       createColorConsts(result),
