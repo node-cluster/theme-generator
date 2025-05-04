@@ -1,7 +1,7 @@
 {
   "name": "site-theme-generator",
   "version": "0.0.1",
-  "description": "Site theme generator CLI",
+  "description": "Theme Generator CLI",
   "scripts": {
     "start": "bun ./src/index.ts generate -c config.json"
   },

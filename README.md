@@ -1,6 +1,6 @@
-# Site Theme Generator CLI
+# Theme Generator CLI
 
-Creates a basic website color palette from some base color config.
+Creates a light and dark themed color palette from base color configuration.
 
 ## Prerequisites
 
@@ -10,11 +10,6 @@ Creates a basic website color palette from some base color config.
 
 ## Usage
 
-### Via Config File
-
 - Edit `config.json` as desired.
-- Run: `bun start:file`
-
-### Via Terminal
-
-- Run: `bun start:input`
+- Run: `bun start`
+- Observe `./palette.ts` file is generated.
