@@ -4,12 +4,13 @@ Creates a light and dark themed color palette from base color configuration.
 
 ## Prerequisites
 
-- Clone repo.
-- Ensure Bun is installed.
+- Clone repo (e.g. `git clone https://github.com/node-cluster/site-theme-generator.git`)
+- Ensure [Bun](https://bun.sh/) is installed (e.g. `curl -fsSL https://bun.sh/install | bash`)
+- `cd site-theme-generator`
 - `bun i`
 
 ## Usage
 
 - Edit `config.json` as desired.
-- Run: `bun start`
-- Observe `./palette.ts` file is generated.
+- `bun start`
+- See `./palette.ts` file is generated.
