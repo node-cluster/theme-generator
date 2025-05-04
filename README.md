@@ -5,7 +5,7 @@ Creates a light and dark themed color palette from base color configuration.
 ## Setup
 
 - Clone repo (e.g. `git clone https://github.com/node-cluster/theme-generator.git`)
-- Ensure [Bun](https://bun.sh/) is installed (e.g. `curl -fsSL https://bun.sh/install | bash`)
+- Ensure [Bun](https://bun.sh/) is installed.
 - `cd theme-generator`
 - `bun i`
 
