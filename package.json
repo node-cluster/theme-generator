@@ -1,5 +1,5 @@
 {
-  "name": "site-theme-generator",
+  "name": "theme-generator",
   "version": "0.0.1",
   "description": "Theme Generator CLI",
   "scripts": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/node-cluster/site-theme-generator.git"
+    "url": "git+https://github.com/node-cluster/theme-generator.git"
   },
   "author": {
     "name": "Sam Hughes",
@@ -16,9 +16,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/node-cluster/site-theme-generator/issues"
+    "url": "https://github.com/node-cluster/theme-generator/issues"
   },
-  "homepage": "https://github.com/node-cluster/site-theme-generator#readme",
+  "homepage": "https://github.com/node-cluster/theme-generator#readme",
   "dependencies": {
     "commander": "^12.0.0",
     "verba": "^2.7.1"

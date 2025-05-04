@@ -73,7 +73,7 @@ const mapKeys = (obj: Record<string, any>, map: (key: string) => string) => {
 }
 
 export const generateCommand = createCommand<GenerateCommandOptions>({
-  action: async ({ configPath = 'site-theme.json' }, startTimer) => {
+  action: async ({ configPath = 'config.json' }, startTimer) => {
     log.step(f => `Getting config from ${f.blue(f.underline(configPath))} (${path.resolve(configPath)})`)
     if (!existsSync(configPath)) {
       throw new Error(`File does not exist at path: ${configPath}.`)

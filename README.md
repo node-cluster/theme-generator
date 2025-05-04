@@ -2,11 +2,11 @@
 
 Creates a light and dark themed color palette from base color configuration.
 
-## Prerequisites
+## Setup
 
-- Clone repo (e.g. `git clone https://github.com/node-cluster/site-theme-generator.git`)
+- Clone repo (e.g. `git clone https://github.com/node-cluster/theme-generator.git`)
 - Ensure [Bun](https://bun.sh/) is installed (e.g. `curl -fsSL https://bun.sh/install | bash`)
-- `cd site-theme-generator`
+- `cd theme-generator`
 - `bun i`
 
 ## Usage
