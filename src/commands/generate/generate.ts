@@ -40,9 +40,9 @@ const createResult = ({ colors, themes }: GenerateCommandConfig): GenerateComman
       dark: {
         colors: {
           canvas: themes.dark.canvas,
-          section: changeLightness(themes.dark.canvas, 10),
-          sectionHighlight: changeLightness(themes.dark.canvas, 20),
-          outline: changeLightness(themes.dark.canvas, 30),
+          section: changeLightness(themes.dark.canvas, 8),
+          sectionHighlight: changeLightness(themes.dark.canvas, 16),
+          outline: changeLightness(themes.dark.canvas, 24),
           type: themes.dark.type,
           typeBody: changeLightness(themes.dark.type, -15),
           typeDemote: changeLightness(themes.dark.type, -30),
@@ -52,9 +52,9 @@ const createResult = ({ colors, themes }: GenerateCommandConfig): GenerateComman
       light: {
         colors: {
           canvas: themes.light.canvas,
-          section: changeLightness(themes.light.canvas, -10),
-          sectionHighlight: changeLightness(themes.light.canvas, -20),
-          outline: changeLightness(themes.light.canvas, -30),
+          section: changeLightness(themes.light.canvas, -6),
+          sectionHighlight: changeLightness(themes.light.canvas, -12),
+          outline: changeLightness(themes.light.canvas, -18),
           type: themes.light.type,
           typeBody: changeLightness(themes.light.type, 15),
           typeDemote: changeLightness(themes.light.type, 30),

@@ -6,9 +6,11 @@
       "type": "#F5FBFF",
       "aliases": {
         "type": 20,
+        "typeDemote": 30,
         "demote": 40,
         "": 50,
         "accent": 60,
+        "canvasHighlight": 70,
         "canvas": 80
       }
     },
@@ -16,11 +18,13 @@
       "canvas": "#FFFFFF",
       "type": "#192129",
       "aliases": {
-        "type": 80,
-        "demote": 60,
+        "type": 20,
+        "typeDemote": 30,
+        "demote": 40,
         "": 50,
-        "accent": 40,
-        "canvas": 20
+        "accent": 60,
+        "canvasHighlight": 70,
+        "canvas": 80
       }
     }
   },
